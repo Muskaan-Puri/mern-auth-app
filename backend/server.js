@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import connectDB from './db.js'
 import userRoutes from './routes/user.route.js'
 import authRoutes from './routes/auth.route.js'
+import cors from 'cors'
 dotenv.config()
 
 
@@ -11,6 +12,13 @@ const app = express()
 
 const port = process.env.PORT || 8000
 
+app.use(
+    cors({
+        origin: 'http://localhost:5173',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        credentials: true, // Allow credentials (cookies, HTTP authentication)
+    })
+);
 app.use(express.json())
 app.use("/", userRoutes)
 app.use("/auth", authRoutes)
