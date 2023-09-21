@@ -14,6 +14,15 @@ const port = process.env.PORT || 8000
 app.use(express.json())
 app.use("/", userRoutes)
 app.use("/auth", authRoutes)
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500
+    const message = err.message || "Internal Server Error"
+    return res.status(statusCode).json({
+        success: false,
+        error: message,
+        statusCode
+    })
+})
 
 const start = async () => {
     try {
