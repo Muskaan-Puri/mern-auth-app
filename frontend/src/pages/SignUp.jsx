@@ -15,8 +15,8 @@ const SignUp = () => {
     e.preventDefault()
     setLoading(true)
     setError(false)
+    const { username, email, password } = formData
     try {
-      const { username, email, password } = formData
       const resp = await axios.post('/auth/signup', {
         username,
         email,
