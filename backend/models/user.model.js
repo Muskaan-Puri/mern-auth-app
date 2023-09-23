@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    profilePicture: {
+        type: String,
+        default: 'https://img.freepik.com/premium-vector/male-silhouette-neon-light-icon-gentlemen-wc-door-glowing-sign-men-s-clothes-department-store-vector-isolated-illustration-isolated-brick-wall_549897-229.jpg?w=360'
     }
 }, { timestamps: true })
 
