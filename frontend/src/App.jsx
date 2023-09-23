@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn'
 import Profile from './pages/Profile'
 import axios from 'axios'
 import Header from './components/Header'
+import PrivateRoute from './components/PrivateRoute'
 
 axios.defaults.baseURL = 'http://localhost:8000'
 axios.defaults.withCredentials = true
@@ -19,7 +20,9 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )
