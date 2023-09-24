@@ -5,6 +5,7 @@ import connectDB from './db.js'
 import userRoutes from './routes/user.route.js'
 import authRoutes from './routes/auth.route.js'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 dotenv.config()
 
 
@@ -20,7 +21,8 @@ app.use(
     })
 );
 app.use(express.json())
-app.use("/", userRoutes)
+app.use(cookieParser())
+app.use("/api", userRoutes)
 app.use("/auth", authRoutes)
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500

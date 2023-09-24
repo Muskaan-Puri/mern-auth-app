@@ -1,5 +1,33 @@
+import User from "../models/user.model.js"
+import errorHandler from "../utils/customError.js"
+import bcryptjs from 'bcryptjs'
+
 const test = (req, res) => {
     res.send("hello")
 }
 
-export { test }
+const updateUser = async (req, res, next) => {
+    console.log(req.user)
+    if (req.user.id !== req.params.id) {
+        return next(errorHandler(401, 'Only the owner of the account can update data!'))
+    }
+    try {
+        if (req.body.password) {
+            req.body.password = bcryptjs.hashSync(req.body.password, 10)
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, {
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password,
+            profilePicture: req.body.profilePicture
+        }, { new: true })
+
+        const { password, ...rest } = updatedUser._doc
+        res.status(201).json(rest)
+    } catch (error) {
+        next(error)
+    }
+}
+
+export { test, updateUser }
