@@ -7,8 +7,10 @@ const test = (req, res) => {
 }
 
 const updateUser = async (req, res, next) => {
-    console.log(req.user)
-    if (req.user.id !== req.params.id) {
+
+    // console.log(req.body);
+
+    if (req.user.id != req.params.id) {
         return next(errorHandler(401, 'Only the owner of the account can update data!'))
     }
     try {
@@ -17,11 +19,12 @@ const updateUser = async (req, res, next) => {
         }
 
         const updatedUser = await User.findByIdAndUpdate(req.params.id, {
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            profilePicture: req.body.profilePicture
+            username: req.body.formData.username,
+            email: req.body.formData.email,
+            password: req.body.formData.password,
+            profilePicture: req.body.formData.profilePicture
         }, { new: true })
+
 
         const { password, ...rest } = updatedUser._doc
         res.status(201).json(rest)

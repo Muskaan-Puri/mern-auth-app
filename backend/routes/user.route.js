@@ -5,6 +5,6 @@ const router = express.Router()
 
 
 router.get('/', test)
-router.post('/update/:id', verifyToken, updateUser)
+router.patch('/update/:id', verifyToken, updateUser)
 
 export default router
