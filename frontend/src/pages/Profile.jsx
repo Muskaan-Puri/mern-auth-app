@@ -13,6 +13,9 @@ import {
   updateUserStart,
   updateUserFailure,
   updateUserSuccess,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
 } from '../redux/user/userSlice'
 
 const Profile = () => {
@@ -59,6 +62,14 @@ const Profile = () => {
     }
   }
 
+  useEffect(() => {
+    if (updateSuccess) {
+      setTimeout(() => {
+        setUpdateSuccess(false)
+      }, 3000) // 3000 milliseconds (3 seconds)
+    }
+  }, [updateSuccess])
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value })
   }
@@ -74,7 +85,19 @@ const Profile = () => {
       setUpdateSuccess(true)
     } catch (error) {
       console.log(error)
-      dispatch(updateUserFailure(error))
+      dispatch(updateUserFailure(resp))
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    try {
+      dispatch(deleteUserStart())
+      const resp = await axios.delete(`/api/delete/${currentUser.data._id}`)
+      console.log(resp)
+      dispatch(deleteUserSuccess(resp))
+    } catch (error) {
+      console.log(error)
+      dispatch(deleteUserFailure(resp))
     }
   }
 
@@ -136,7 +159,12 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete Account</span>
+        <span
+          className="text-red-700 cursor-pointer"
+          onClick={handleDeleteAccount}
+        >
+          Delete Account
+        </span>
         <span className="text-red-700 cursor-pointer">Sign out</span>
       </div>
       <p className="text-red-700 mt-5">{error && 'Something went wrong!'}</p>

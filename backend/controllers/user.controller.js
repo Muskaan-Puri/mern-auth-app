@@ -2,13 +2,8 @@ import User from "../models/user.model.js"
 import errorHandler from "../utils/customError.js"
 import bcryptjs from 'bcryptjs'
 
-const test = (req, res) => {
-    res.send("hello")
-}
 
 const updateUser = async (req, res, next) => {
-
-    // console.log(req.body);
 
     if (req.user.id != req.params.id) {
         return next(errorHandler(401, 'Only the owner of the account can update data!'))
@@ -33,4 +28,18 @@ const updateUser = async (req, res, next) => {
     }
 }
 
-export { test, updateUser }
+const deleteUser = async (req, res, next) => {
+
+    if (req.user.id != req.params.id) {
+        return next(errorHandler(401, 'Only the owner of the account can delete the account!'))
+    }
+
+    try {
+        await User.findByIdAndDelete(req.params.id)
+        res.status(200).json('User has been deleted!')
+    } catch (error) {
+        next(error)
+    }
+}
+
+export { updateUser, deleteUser }
