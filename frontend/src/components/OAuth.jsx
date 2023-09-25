@@ -18,7 +18,6 @@ const OAuth = () => {
         email: result.user.email,
         photo: result.user.photoURL,
       })
-      console.log(resp)
       dispatch(signinSuccess(resp))
       navigate('/')
     } catch (error) {

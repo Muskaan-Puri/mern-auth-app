@@ -57,4 +57,12 @@ const google = async (req, res, next) => {
     }
 }
 
-export { signup, signin, google }
+const signout = async (req, res, next) => {
+    try {
+        res.clearCookie('access_token').status(200).json('Signout success!')
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export { signup, signin, google, signout }
